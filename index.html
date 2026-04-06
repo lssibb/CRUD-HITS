@@ -6,8 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>crud-hits</title>
   </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
+<body>
+  <h1>Напитки</h1>
+
+  <!-- Форма создания -->
+  <section id="create-section">
+    <input id="drink-name" type="text" placeholder="Название напитка" />
+    <button id="btn-create">Создать</button>
+  </section>
+
+  <!-- Список напитков -->
+  <section id="drinks-list"></section>
+
+  <!-- Детали выбранного напитка -->
+  <section id="drink-detail"></section>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
 </html>
