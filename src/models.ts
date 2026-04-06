@@ -82,9 +82,11 @@ export class Add extends Action {
 }
 
 export class Drink {
+    public id: string;
   constructor(
-    public id: number,
     public name: string,
     public elements: Element[]
-  ) {}
+  ) {
+    this.id=crypto.randomUUID();
+  }
 }
