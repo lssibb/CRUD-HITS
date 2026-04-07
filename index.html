@@ -12,9 +12,25 @@
   <!-- Форма создания -->
   <section id="create-section">
     <input id="drink-name" type="text" placeholder="Название напитка" />
+    <select id="element-select">
+    <option value="water">Вода</option>
+    <option value="coffee">Кофейное зерно</option>
+    <option value="milk">Молоко</option>
+    <option value="syrup">Сироп</option>
+    <option value="ice">Лёд</option>
+    <option value="add">Добавить</option>
+    <option value="boil">Вскипятить</option>
+    <option value="grind">Перемолоть</option>
+    <option value="mix">Перемешать</option>
+    <option value="pour">Налить</option>
+    <option value="whip">Взбить</option>
+</select>
+<input id="weight-input" type="number" placeholder="Масса (г)" />
+<button id="btn-add-element">Добавить элемент</button>
+
     <button id="btn-create">Создать</button>
   </section>
-
+<section id="current-drink"></section>
   <!-- Список напитков -->
   <section id="drinks-list"></section>
 
