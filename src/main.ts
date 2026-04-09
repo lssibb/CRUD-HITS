@@ -1,4 +1,4 @@
-import { Add, Boil, CoffeBean, Drink, Grind, Ice, Milk, Mix, Pour, Syrup, Water, Whip } from "./models";
+import { Add, Boil, CoffeeBean, Drink, Grind, Ice, Milk, Mix, Pour, Syrup, Water, Whip } from "./models";
 import { Store } from "./store";
 import './style.css';
 import type { Element } from "./models";
@@ -8,6 +8,7 @@ const store = new Store();
 
 const creationInput = document.getElementById("drink-name")!;
 const btnCreateOrSave = document.getElementById("btn-create")!;
+const btnCancel = document.getElementById("btn-cancel")!;
 const elementSelection = document.getElementById("element-select")!;
 const btnAdd = document.getElementById("btn-add-element")!;
 const weightInput = document.getElementById("weight-input")!;
@@ -15,12 +16,25 @@ const currentDrinkDescription = document.getElementById("current-drink")!;
 let currentElements: Element[] = [];
 let editingId: string | null = null;
 
+function resetForm(){
+  (creationInput as HTMLInputElement).value = "";
+  currentElements.length = 0;
+  editingId = null;
+  btnCreateOrSave.textContent = "Создать";
+  btnCancel.style.display = "none";
+  renderСurrentElements();
+}
+
+btnCancel.addEventListener("click", () => {
+  resetForm();
+});
+
 btnAdd.addEventListener("click", () => {
   let element : Element;
   const weight = Number((weightInput as HTMLInputElement).value);
   switch ((elementSelection as HTMLSelectElement).value){
     case "water": element = new Water(weight);break;
-    case "coffee": element = new CoffeBean(weight);break;
+    case "coffee": element = new CoffeeBean(weight);break;
     case "milk": element = new Milk(weight);break;
     case "syrup": element = new Syrup(weight);break;
     case "ice": element = new Ice(weight);break;
@@ -40,17 +54,14 @@ btnAdd.addEventListener("click", () => {
 
 btnCreateOrSave.addEventListener("click", () => {
   const name = (creationInput as HTMLInputElement).value;
-  if(editingId!=null){
+  if(editingId!==null){
     store.updateDrink(editingId, name, [...currentElements]);
-    editingId = null;
   }
   else{
     const drink = new Drink(name, [...currentElements]);
     store.addDrink(drink);
   }
-  btnCreateOrSave.textContent="Создать";
-  currentElements.length = 0;
-  renderСurrentElements();
+  resetForm();
   renderDrinks();
 });
 
@@ -75,7 +86,8 @@ function renderDrinks(){
       (creationInput as HTMLInputElement).value = drink.name;
       currentElements = [...drink.elements];
       editingId = drink.id;
-      btnCreateOrSave.textContent="Редактировать";
+      btnCreateOrSave.textContent="Сохранить";
+      btnCancel.style.display = "";
       renderСurrentElements();
       renderDrinks();
     })

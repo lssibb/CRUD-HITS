@@ -21,7 +21,7 @@ export class Water extends Ingredient {
     }
 }
 
-export class CoffeBean extends Ingredient {
+export class CoffeeBean extends Ingredient {
     describe(): string {
         return `Кофейное зерно - ${this.weightGrams}г`
     }
