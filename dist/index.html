@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>crud-hits</title>
+    <script type="module" crossorigin>(function(){let e=document.createElement(`link`).relList;if(e&&e.supports&&e.supports(`modulepreload`))return;for(let e of document.querySelectorAll(`link[rel="modulepreload"]`))n(e);new MutationObserver(e=>{for(let t of e)if(t.type===`childList`)for(let e of t.addedNodes)e.tagName===`LINK`&&e.rel===`modulepreload`&&n(e)}).observe(document,{childList:!0,subtree:!0});function t(e){let t={};return e.integrity&&(t.integrity=e.integrity),e.referrerPolicy&&(t.referrerPolicy=e.referrerPolicy),e.crossOrigin===`use-credentials`?t.credentials=`include`:e.crossOrigin===`anonymous`?t.credentials=`omit`:t.credentials=`same-origin`,t}function n(e){if(e.ep)return;e.ep=!0;let n=t(e);fetch(e.href,n)}})();var e=class{constructor(e){this.weightGrams=e}},t=class{},n=class extends e{describe(){return`Вода - ${this.weightGrams}г`}},r=class extends e{describe(){return`Кофейное зерно - ${this.weightGrams}г`}},i=class extends e{describe(){return`Лед - ${this.weightGrams}г`}},a=class extends e{describe(){return`Молоко - ${this.weightGrams}г`}},o=class extends e{describe(){return`Сироп - ${this.weightGrams}г`}},s=class extends t{execute(){}describe(){return`Действие: Вскипятить`}},c=class extends t{execute(){}describe(){return`Действие: Перемолоть`}},l=class extends t{execute(){}describe(){return`Действие: Перемешать`}},u=class extends t{execute(){}describe(){return`Действие: Пролить`}},d=class extends t{execute(){}describe(){return`Действие: Взбить`}},f=class extends t{execute(){}describe(){return`Действие: Добавить`}},p=class{id;constructor(e,t){this.name=e,this.elements=t,this.id=crypto.randomUUID()}},m=new class{drinks=[];addDrink(e){this.drinks.push(e)}getDrink(e){return this.drinks.find(t=>t.id===e)}updateDrink(e,t,n){let r=this.drinks.find(t=>t.id===e);r&&(t&&(r.name=t),n&&(r.elements=n))}deleteDrink(e){this.drinks=this.drinks.filter(t=>t.id!==e)}getAllDrinks(){return this.drinks}},h=document.getElementById(`drink-name`),g=document.getElementById(`btn-create`),_=document.getElementById(`btn-cancel`),v=document.getElementById(`element-select`),y=document.getElementById(`btn-add-element`),b=document.getElementById(`weight-input`),x=document.getElementById(`current-drink`),S=[],C=null;function w(){h.value=``,S.length=0,C=null,g.textContent=`Создать`,_.style.display=`none`,D()}_.addEventListener(`click`,()=>{w()}),y.addEventListener(`click`,()=>{let e,t=Number(b.value);switch(v.value){case`water`:e=new n(t);break;case`coffee`:e=new r(t);break;case`milk`:e=new a(t);break;case`syrup`:e=new o(t);break;case`ice`:e=new i(t);break;case`add`:e=new f;break;case`boil`:e=new s;break;case`grind`:e=new c;break;case`mix`:e=new l;break;case`pour`:e=new u;break;case`whip`:e=new d;break;default:return}S.push(e),D()}),g.addEventListener(`click`,()=>{let e=h.value;if(C!==null)m.updateDrink(C,e,[...S]);else{let t=new p(e,[...S]);m.addDrink(t)}w(),E()});var T=document.getElementById(`drinks-list`);function E(){T.innerHTML=``;for(let e of m.getAllDrinks()){let t=document.createElement(`button`),n=document.createElement(`button`),r=document.createElement(`div`);r.textContent=`${e.name}: ${e.elements.map(e=>e.describe()).join(`, `)}`,n.textContent=`🖋`,n.addEventListener(`click`,()=>{h.value=e.name,S=[...e.elements],C=e.id,g.textContent=`Сохранить`,_.style.display=``,D(),E()}),r.appendChild(n),t.textContent=`❌`,t.addEventListener(`click`,()=>{m.deleteDrink(e.id),E()}),r.appendChild(t),T.appendChild(r)}}function D(){x.innerHTML=``;for(let e of S){let t=document.createElement(`button`),n=document.createElement(`div`);t.textContent=`❌`,t.addEventListener(`click`,()=>{S=S.filter(t=>t!=e),D()}),n.textContent=e.describe(),n.appendChild(t),x.appendChild(n)}}</script>
+    <style rel="stylesheet" crossorigin>*{box-sizing:border-box;margin:0;padding:0}body{color:#333;background:#f5f5f5;justify-content:center;padding:40px 20px;font-family:system-ui,sans-serif;display:flex}h1{margin-bottom:24px;font-size:28px;font-weight:600}#create-section{background:#fff;border-radius:12px;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:24px;padding:20px;display:flex;box-shadow:0 1px 3px #0000001a}input,select{border:1px solid #ddd;border-radius:8px;outline:none;padding:8px 12px;font-size:14px;transition:border-color .2s}input:focus,select:focus{border-color:#7c3aed}#drink-name{flex:1;min-width:180px}#weight-input{width:100px}button{cursor:pointer;border:none;border-radius:8px;padding:8px 16px;font-size:14px;transition:background .2s}#btn-create{color:#fff;background:#7c3aed}#btn-create:hover{background:#6d28d9}#btn-add-element{color:#333;background:#e0e0e0}#btn-add-element:hover{background:#d0d0d0}#current-drink{background:#fff;border-radius:12px;margin-bottom:24px;overflow:hidden;box-shadow:0 1px 3px #0000001a}#current-drink:empty{display:none}#current-drink div{border-bottom:1px solid #f0f0f0;justify-content:space-between;align-items:center;padding:10px 16px;font-size:14px;display:flex}#current-drink div:last-child{border-bottom:none}#current-drink button{opacity:.5;background:0 0;padding:4px 8px;font-size:12px}#current-drink button:hover{opacity:1}#drinks-list{flex-direction:column;gap:8px;display:flex}#drinks-list div{background:#fff;border-radius:12px;align-items:center;padding:14px 16px;font-size:14px;display:flex;box-shadow:0 1px 3px #0000001a}#drinks-list div button{opacity:.5;background:0 0;margin-left:8px;padding:4px 8px;font-size:14px}#drinks-list div button:first-of-type{margin-left:auto}#drinks-list div button:hover{opacity:1}main{width:100%;max-width:600px}
+/*$vite$:1*/</style>
+  </head>
+<body>
+  <main>
+    <h1>Напитки</h1>
+    <section id="create-section">
+      <input id="drink-name" type="text" placeholder="Название напитка" />
+      <select id="element-select">
+        <option value="water">Вода</option>
+        <option value="coffee">Кофейное зерно</option>
+        <option value="milk">Молоко</option>
+        <option value="syrup">Сироп</option>
+        <option value="ice">Лёд</option>
+        <option value="add">Добавить</option>
+        <option value="boil">Вскипятить</option>
+        <option value="grind">Перемолоть</option>
+        <option value="mix">Перемешать</option>
+        <option value="pour">Пролить</option>
+        <option value="whip">Взбить</option>
+      </select>
+      <input id="weight-input" type="number" placeholder="Масса (г)" />
+      <button id="btn-add-element">Добавить элемент</button>
+      <button id="btn-create">Создать</button>
+      <button id="btn-cancel" style="display:none">Отмена</button>
+    </section>
+
+    <section id="current-drink"></section>
+    <section id="drinks-list"></section>
+  </main>
+
+</body>
+</html>
