@@ -11,7 +11,7 @@ export abstract class  Ingredient implements Element {
 }
 
 export abstract class Action implements Element {
-
+    abstract execute(): void;
     abstract describe(): string;
 }
 
@@ -45,40 +45,46 @@ export class Syrup extends Ingredient {
     }
 }
 
-export class Boil extends Action{
+export class Boil extends Action {
+    execute(): void {}
     describe(): string {
         return "Действие: Вскипятить";
     }
 }
 
-export class Grind extends Action{
+export class Grind extends Action {
+    execute(): void {}
     describe(): string {
         return "Действие: Перемолоть";
     }
 }
 
-export class Mix extends Action{
+export class Mix extends Action {
+    execute(): void {}
     describe(): string {
-        return "Действие: Смешать";
+        return "Действие: Перемешать";
     }
 }
 
-export class Pour extends Action{
+export class Pour extends Action {
+    execute(): void {}
     describe(): string {
-        return "Действие: Налить";
+        return "Действие: Пролить";
     }
 }
 
-export class Whip extends Action{
+export class Whip extends Action {
+    execute(): void {}
     describe(): string {
         return "Действие: Взбить";
     }
 }
 
 export class Add extends Action {
-  describe(): string {
-    return "Действие: Добавить";
-  }
+    execute(): void {}
+    describe(): string {
+        return "Действие: Добавить";
+    }
 }
 
 export class Drink {

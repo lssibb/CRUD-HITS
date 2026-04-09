@@ -30,24 +30,21 @@ btnAdd.addEventListener("click", () => {
     case "mix": element = new Mix();break;
     case "pour": element = new Pour();break;
     case "whip": element = new Whip();break;
+    default: return;
   }
-  
-  
-  currentElements.push(element!);
+
+  currentElements.push(element);
   renderСurrentElements();
 });
 
 
 btnCreateOrSave.addEventListener("click", () => {
+  const name = (creationInput as HTMLInputElement).value;
   if(editingId!=null){
-    const drink = store.getDrink(editingId);
-    if (!drink) return;
-    drink.name = (creationInput as HTMLInputElement).value;
-    drink.elements = [...currentElements];
+    store.updateDrink(editingId, name, [...currentElements]);
     editingId = null;
   }
   else{
-    const name = (creationInput as HTMLInputElement).value;
     const drink = new Drink(name, [...currentElements]);
     store.addDrink(drink);
   }
