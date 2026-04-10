@@ -1,7 +1,7 @@
-import { Add, Boil, CoffeeBean, Drink, Grind, Ice, Milk, Mix, Pour, Syrup, Water, Whip } from "./models";
+import { Add, Boil, CoffeeBean, Drink, Grind, Ice, Milk, Mix, Pour, Syrup, Water, Whip, Action } from "./models";
 import { Store } from "./store";
 import './style.css';
-import type { Element } from "./models";
+import type { Element, Ingredient } from "./models";
 
 
 const store = new Store();
@@ -10,6 +10,7 @@ const creationInput = document.getElementById("drink-name")!;
 const btnCreateOrSave = document.getElementById("btn-create")!;
 const btnCancel = document.getElementById("btn-cancel")!;
 const elementSelection = document.getElementById("element-select")!;
+const actionSelection = document.getElementById("action-select")!;
 const btnAdd = document.getElementById("btn-add-element")!;
 const weightInput = document.getElementById("weight-input")!;
 const currentDrinkDescription = document.getElementById("current-drink")!;
@@ -30,24 +31,30 @@ btnCancel.addEventListener("click", () => {
 });
 
 btnAdd.addEventListener("click", () => {
-  let element : Element;
+
+  let ingredient : Ingredient;
   const weight = Number((weightInput as HTMLInputElement).value);
   switch ((elementSelection as HTMLSelectElement).value){
-    case "water": element = new Water(weight);break;
-    case "coffee": element = new CoffeeBean(weight);break;
-    case "milk": element = new Milk(weight);break;
-    case "syrup": element = new Syrup(weight);break;
-    case "ice": element = new Ice(weight);break;
-    case "add": element = new Add();break;
-    case "boil": element = new Boil();break;
-    case "grind": element = new Grind();break;
-    case "mix": element = new Mix();break;
-    case "pour": element = new Pour();break;
-    case "whip": element = new Whip();break;
+    case "water": ingredient = new Water(weight);break;
+    case "coffee": ingredient = new CoffeeBean(weight);break;
+    case "milk": ingredient = new Milk(weight);break;
+    case "syrup": ingredient = new Syrup(weight);break;
+    case "ice": ingredient = new Ice(weight);break;
     default: return;
   }
 
-  currentElements.push(element);
+  let action : Action;
+   switch ((actionSelection as HTMLSelectElement).value){
+    case "add": action = new Add(ingredient);break;
+    case "boil": action = new Boil(ingredient);break;
+    case "grind": action = new Grind(ingredient);break;
+    case "mix": action = new Mix(ingredient);break;
+    case "pour": action = new Pour(ingredient);break;
+    case "whip": action = new Whip(ingredient);break;
+    default: return;
+  }
+
+  currentElements.push(action);
   renderСurrentElements();
 });
 

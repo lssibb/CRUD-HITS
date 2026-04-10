@@ -13,6 +13,7 @@ export abstract class  Ingredient implements Element {
 export abstract class Action implements Element {
     abstract execute(): void;
     abstract describe(): string;
+    abstract ingredient: Ingredient;
 }
 
 export class Water extends Ingredient {
@@ -48,43 +49,67 @@ export class Syrup extends Ingredient {
 export class Boil extends Action {
     execute(): void {}
     describe(): string {
-        return "Действие: Вскипятить";
+        return `Вскипятить ${this.ingredient.describe()} ${this.ingredient.weightGrams}г`;
+    }
+    ingredient: Ingredient;
+    constructor(ingredient: Ingredient) {        super();
+        this.ingredient = ingredient;
     }
 }
 
 export class Grind extends Action {
     execute(): void {}
     describe(): string {
-        return "Действие: Перемолоть";
+        return `Перемолоть ${this.ingredient.describe()} ${this.ingredient.weightGrams}г`;
+    }
+    ingredient: Ingredient;
+    constructor(ingredient: Ingredient  ) {        super();
+        this.ingredient = ingredient;
     }
 }
 
 export class Mix extends Action {
     execute(): void {}
     describe(): string {
-        return "Действие: Перемешать";
+        return `Перемешать ${this.ingredient.describe()} ${this.ingredient.weightGrams}г`;
+    }
+    ingredient: Ingredient;
+    constructor(ingredient: Ingredient  ) {        super();
+        this.ingredient = ingredient;
     }
 }
 
 export class Pour extends Action {
     execute(): void {}
     describe(): string {
-        return "Действие: Пролить";
+        return `Пролить ${this.ingredient.describe()} ${this.ingredient.weightGrams}г`;
+    }  
+    ingredient: Ingredient;
+    constructor(ingredient: Ingredient  ) {        super();
+        this.ingredient = ingredient;
     }
 }
 
 export class Whip extends Action {
     execute(): void {}
     describe(): string {
-        return "Действие: Взбить";
+        return `Взбить ${this.ingredient.describe()} ${this.ingredient.weightGrams}г`;
+    }
+    ingredient: Ingredient; 
+    constructor(ingredient: Ingredient  ) {        super();
+        this.ingredient = ingredient;
     }
 }
 
 export class Add extends Action {
     execute(): void {}
     describe(): string {
-        return "Действие: Добавить";
+        return `Добавить ${this.ingredient.describe()} ${this.ingredient.weightGrams}г`;
     }
+    ingredient: Ingredient;
+    constructor(ingredient: Ingredient) {        super();
+        this.ingredient = ingredient;
+    }   
 }
 
 export class Drink {
