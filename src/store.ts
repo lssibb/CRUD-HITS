@@ -1,5 +1,4 @@
-import { Drink } from "./models"
-import type { Element } from "./models"
+import { Drink, Action } from "./models"
 
 
 export class Store {
@@ -13,7 +12,7 @@ export class Store {
         return this.drinks.find(d => d.id === id);
     }
 
-    updateDrink(id:string, name?: string, elements?: Element[]){
+    updateDrink(id:string, name?: string, elements?: Action[]){
 
         const drink = this.drinks.find(d => d.id === id);
         if (!drink) return;

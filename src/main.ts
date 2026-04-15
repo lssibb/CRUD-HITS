@@ -1,8 +1,7 @@
 import { Add, Boil, CoffeeBean, Drink, Grind, Ice, Milk, Mix, Pour, Syrup, Water, Whip, Action } from "./models";
 import { Store } from "./store";
 import './style.css';
-import type { Element, Ingredient } from "./models";
-
+import type { Ingredient } from "./models";
 
 const store = new Store();
 
@@ -14,13 +13,16 @@ const actionSelection = document.getElementById("action-select")!;
 const btnAdd = document.getElementById("btn-add-element")!;
 const weightInput = document.getElementById("weight-input")!;
 const currentDrinkDescription = document.getElementById("current-drink")!;
-let currentElements: Element[] = [];
+
+let currentElements: Action[] = [];
 let editingId: string | null = null;
+let activeAction: Action | null = null;
 
 function resetForm(){
   (creationInput as HTMLInputElement).value = "";
   currentElements.length = 0;
   editingId = null;
+  activeAction = null;
   btnCreateOrSave.textContent = "Создать";
   btnCancel.style.display = "none";
   renderСurrentElements();
@@ -31,9 +33,9 @@ btnCancel.addEventListener("click", () => {
 });
 
 btnAdd.addEventListener("click", () => {
-
-  let ingredient : Ingredient;
   const weight = Number((weightInput as HTMLInputElement).value);
+  let ingredient : Ingredient;
+  
   switch ((elementSelection as HTMLSelectElement).value){
     case "water": ingredient = new Water(weight);break;
     case "coffee": ingredient = new CoffeeBean(weight);break;
@@ -43,21 +45,27 @@ btnAdd.addEventListener("click", () => {
     default: return;
   }
 
-  let action : Action;
-   switch ((actionSelection as HTMLSelectElement).value){
-    case "add": action = new Add(ingredient);break;
-    case "boil": action = new Boil(ingredient);break;
-    case "grind": action = new Grind(ingredient);break;
-    case "mix": action = new Mix(ingredient);break;
-    case "pour": action = new Pour(ingredient);break;
-    case "whip": action = new Whip(ingredient);break;
-    default: return;
+  if (activeAction) {
+    activeAction.add(ingredient);
+  } else {
+    let action : Action;
+    const actionType = (actionSelection as HTMLSelectElement).value;
+    
+    switch (actionType){
+      case "add": action = new Add(ingredient);break;
+      case "boil": action = new Boil(ingredient);break;
+      case "grind": action = new Grind(ingredient);break;
+      case "mix": action = new Mix(ingredient);break;
+      case "pour": action = new Pour(ingredient);break;
+      case "whip": action = new Whip(ingredient);break;
+      default: return;
+    }
+    currentElements.push(action);
+    activeAction = action;
   }
 
-  currentElements.push(action);
   renderСurrentElements();
 });
-
 
 btnCreateOrSave.addEventListener("click", () => {
   const name = (creationInput as HTMLInputElement).value;
@@ -72,12 +80,7 @@ btnCreateOrSave.addEventListener("click", () => {
   renderDrinks();
 });
 
-
-
-
-
 const drinksList = document.getElementById("drinks-list")!;
-
 
 function renderDrinks(){
   drinksList.innerHTML = "";
@@ -86,13 +89,14 @@ function renderDrinks(){
     const btnEditDrink = document.createElement('button');
     const line = document.createElement('div');
 
-    line.textContent = `${drink.name}: ${drink.elements.map(e => e.describe()).join(", ")}`;
+    line.textContent = `${drink.name}: ${drink.elements.map(e => e.describe()).join("; ")}`;
 
-    btnEditDrink.textContent='🖋';
+    btnEditDrink.textContent='✎';
     btnEditDrink.addEventListener("click", () => {
       (creationInput as HTMLInputElement).value = drink.name;
       currentElements = [...drink.elements];
       editingId = drink.id;
+      activeAction = null;
       btnCreateOrSave.textContent="Сохранить";
       btnCancel.style.display = "";
       renderСurrentElements();
@@ -100,7 +104,7 @@ function renderDrinks(){
     })
     line.appendChild(btnEditDrink);
 
-    btnDeleteDrink.textContent='❌';
+    btnDeleteDrink.textContent='✕';
     btnDeleteDrink.addEventListener("click", () => {
       store.deleteDrink(drink.id);
       renderDrinks();
@@ -114,19 +118,48 @@ function renderDrinks(){
 function renderСurrentElements(){
   currentDrinkDescription.innerHTML = "";
   
-  for(const element of currentElements){
+  for(const action of currentElements){
+    const container = document.createElement('div');
+    container.style.padding = "5px";
+    container.style.marginBottom = "5px";
+    container.style.borderRadius = "4px";
+    
+    if (action === activeAction) {
+        container.style.backgroundColor = "#e7f1ff";
+        container.style.border = "1px solid #007bff";
+    } else {
+        container.style.border = "1px solid #ddd";
+    }
+    
+    const line = document.createElement('span');
+    line.textContent = action.describe();
+    
+    const btnSelect = document.createElement('button');
+    btnSelect.textContent = action === activeAction ? '✓' : '+';
+    btnSelect.style.marginLeft = "10px";
+    btnSelect.addEventListener('click', () => {
+      if (activeAction === action) {
+        activeAction = null; 
+      } else {
+        activeAction = action;
+      }
+      renderСurrentElements();
+    });
+
     const btnDeleteElement = document.createElement('button');
-    const line = document.createElement('div');
-    btnDeleteElement.textContent='❌';
+    btnDeleteElement.textContent='✕';
     btnDeleteElement.addEventListener("click", () => {
-      currentElements=currentElements.filter(e=>e!=element);
+      if (activeAction === action) activeAction = null;
+      currentElements = currentElements.filter(e => e != action);
       renderСurrentElements();
     })
-    line.textContent=element.describe();
-    line.appendChild(btnDeleteElement);
-    currentDrinkDescription.appendChild(line);
-    
-  }
 
-  
+    container.appendChild(line);
+    container.appendChild(btnSelect);
+    container.appendChild(btnDeleteElement);
+    currentDrinkDescription.appendChild(container);
+  }
 }
+
+renderDrinks();
+renderСurrentElements();
