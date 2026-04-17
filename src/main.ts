@@ -45,21 +45,22 @@ btnAdd.addEventListener("click", () => {
     default: return;
   }
 
+  let action : Action;
+  const actionType = (actionSelection as HTMLSelectElement).value;
+  
+  switch (actionType){
+    case "add": action = new Add(ingredient);break;
+    case "boil": action = new Boil(ingredient);break;
+    case "grind": action = new Grind(ingredient);break;
+    case "mix": action = new Mix(ingredient);break;
+    case "pour": action = new Pour(ingredient);break;
+    case "whip": action = new Whip(ingredient);break;
+    default: return;
+  }
+
   if (activeAction) {
-    activeAction.add(ingredient);
+    activeAction.add(action);
   } else {
-    let action : Action;
-    const actionType = (actionSelection as HTMLSelectElement).value;
-    
-    switch (actionType){
-      case "add": action = new Add(ingredient);break;
-      case "boil": action = new Boil(ingredient);break;
-      case "grind": action = new Grind(ingredient);break;
-      case "mix": action = new Mix(ingredient);break;
-      case "pour": action = new Pour(ingredient);break;
-      case "whip": action = new Whip(ingredient);break;
-      default: return;
-    }
     currentElements.push(action);
     activeAction = action;
   }
