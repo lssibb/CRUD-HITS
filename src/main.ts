@@ -25,7 +25,7 @@ function resetForm(){
   activeAction = null;
   btnCreateOrSave.textContent = "Создать";
   btnCancel.style.display = "none";
-  renderСurrentElements();
+  renderCurrentElements();
 }
 
 btnCancel.addEventListener("click", () => {
@@ -45,9 +45,20 @@ btnAdd.addEventListener("click", () => {
     default: return;
   }
 
-  let action : Action;
   const actionType = (actionSelection as HTMLSelectElement).value;
   
+  if (actionType === "none") {
+    if (activeAction) {
+      activeAction.add(ingredient);
+      (weightInput as HTMLInputElement).value = "";
+      renderCurrentElements();
+    } else {
+      alert("Сначала создайте или выберите действие (шаг рецепта), в которое нужно добавить ингредиент.");
+    }
+    return;
+  }
+
+  let action : Action;
   switch (actionType){
     case "add": action = new Add(ingredient);break;
     case "boil": action = new Boil(ingredient);break;
@@ -65,7 +76,8 @@ btnAdd.addEventListener("click", () => {
     activeAction = action;
   }
 
-  renderСurrentElements();
+  (weightInput as HTMLInputElement).value = "";
+  renderCurrentElements();
 });
 
 btnCreateOrSave.addEventListener("click", () => {
@@ -100,7 +112,7 @@ function renderDrinks(){
       activeAction = null;
       btnCreateOrSave.textContent="Сохранить";
       btnCancel.style.display = "";
-      renderСurrentElements();
+      renderCurrentElements();
       renderDrinks();
     })
     line.appendChild(btnEditDrink);
@@ -116,7 +128,7 @@ function renderDrinks(){
   }
 }
 
-function renderСurrentElements(){
+function renderCurrentElements(){
   currentDrinkDescription.innerHTML = "";
   
   for(const action of currentElements){
@@ -144,7 +156,7 @@ function renderСurrentElements(){
       } else {
         activeAction = action;
       }
-      renderСurrentElements();
+      renderCurrentElements();
     });
 
     const btnDeleteElement = document.createElement('button');
@@ -152,7 +164,7 @@ function renderСurrentElements(){
     btnDeleteElement.addEventListener("click", () => {
       if (activeAction === action) activeAction = null;
       currentElements = currentElements.filter(e => e != action);
-      renderСurrentElements();
+      renderCurrentElements();
     })
 
     container.appendChild(line);
@@ -163,4 +175,4 @@ function renderСurrentElements(){
 }
 
 renderDrinks();
-renderСurrentElements();
+renderCurrentElements();
